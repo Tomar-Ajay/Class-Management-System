@@ -38,21 +38,24 @@ router.post('/teachers/logout', auth, async (req, res) => {
     }
 })
 
-// router.post('/teachers/logoutAll', auth, async (req, res) => {
-//     try {
-//         req.teacher.tokens = []
-//         await req.teacher.save()
-//         res.send()
-//     } catch (e) {
-//         res.status(500).send()
-//     }
-// })
+router.get('/teachers/:id', auth, async (req, res) => {
+    const _id = req.params.id
 
-router.get('/teachers/me', auth, async (req, res) => {
-    res.send(req.teacher)
+    try {
+        const teacher = await Teacher.findOne({ _id
+        })
+
+        if (!teacher) {
+            return res.status(404).send()
+        }
+
+        res.send(teacher)
+    } catch (e) {
+        res.status(500).send()
+    }
 })
 
-router.patch('/teachers/me', auth, async (req, res) => {
+router.patch('/teachers/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'specialization', 'rating']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -70,7 +73,7 @@ router.patch('/teachers/me', auth, async (req, res) => {
     }
 })
 
-router.delete('/teachers/me', auth, async (req, res) => {
+router.delete('/teachers/:id', auth, async (req, res) => {
     try {
         await req.teacher.remove()
         res.send(req.teacher)

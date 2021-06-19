@@ -72,7 +72,7 @@ studentSchema.methods.toJSON = function () {
 
 studentSchema.methods.generateAuthToken = async function () {
     const student = this
-    const token = jwt.sign({ _id: student._id.toString() }, process.env.JWT_SECRET)
+    const token = jwt.sign({ _id: student._id.toString() }, "abcd1234")
 
     student.tokens = student.tokens.concat({ token })
     await student.save()

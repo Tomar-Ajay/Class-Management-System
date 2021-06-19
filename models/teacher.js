@@ -35,6 +35,7 @@ const teacherSchema = new mongoose.Schema({
     },
     specialization: {
         type: String,
+        default: "None",
         trim: true
     },
     rating: {
@@ -72,7 +73,7 @@ teacherSchema.methods.toJSON = function () {
 
 teacherSchema.methods.generateAuthToken = async function () {
     const teacher = this
-    const token = jwt.sign({ _id: teacher._id.toString() }, process.env.JWT_SECRET)
+    const token = jwt.sign({ _id: teacher._id.toString() }, "abcd1234")
 
     teacher.tokens = teacher.tokens.concat({ token })
     await teacher.save()
